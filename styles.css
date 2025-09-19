@@ -2260,3 +2260,6 @@ html, body {
     font-size: 12px;
   }
 }
+.banner-indicators {
+  display: none !important;
+}

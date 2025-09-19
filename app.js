@@ -43,26 +43,26 @@ const ubicaciones = {
     "Artemisa": {
       id: 1,
       municipios: {
-        "Bahía Honda": 1,
+        
         "San Cristóbal": 2,
-        "Candelaria": 3,
+        /*"Candelaria": 3,
         "Artemisa": 4,
         "Alquízar": 5,
         "Güira de Melena": 6,
         "San Antonio de los Baños": 7,
         "Bauta": 8,
-        "Caimito": 9,
+        "Caimito": 9,*/
         "Guanajay": 10,
-        "Mariel": 11,
+        /*"Mariel": 11,*/
       }
     },
-    "Pinar Del Río": {
+    /*"Pinar Del Río": {
       id: 2,
       municipios: {
         "Los Palacios": 12,
         "Consolación": 13,
       }
-    },
+    },*/
    
 },
   provinciaSeleccionada: null,
