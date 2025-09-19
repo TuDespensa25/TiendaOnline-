@@ -53,7 +53,7 @@
       <h1><i class="fas fa-shopping-cart"></i> Tu Carrito</h1>
       <div id="items-carrito"></div>
       <div class="total">
-        <h3>Total: <span id="total-pedido">USD 0.00</span></h3>
+        <h3>Total: <span id="total-pedido">CUP 0.00</span></h3>
         <button id="pedir-whatsapp">Procesar Pedido</button>
         <button id="seguir-comprando">
           <i class="fas fa-shopping-cart"></i> Seguir Comprando
@@ -109,29 +109,24 @@
   
         <label for="nota">Nota (opcional):</label>
         <textarea id="nota" name="nota" rows="3"></textarea>
-        <label for="metodo-pago">Método de Pago:</label>
-        <!-- Se han agregado las opciones de pago solicitadas -->
-        <select id="metodo-pago" name="metodo-pago" required>
-          <option value="Zelle">Zelle</option>
-         <!-- <option value="Transferencia en CUP">Transferencia en CUP</option>
-          <option value="USD Efectivo">USD Efectivo</option>
-          <option value="CUP Efectivo">CUP Efectivo</option>-->
-        </select>
+        
+        <!-- Eliminado el selector de método de pago y reemplazado por indicador fijo -->
+        <div class="moneda-cup-fija" style="padding: 10px; background-color: #f5f5f5; border-radius: 4px; margin-bottom: 15px; font-weight: bold; text-align: center;">
+          Moneda: CUP (Pesos Cubanos)
+        </div>
+        
         <div id="info-vendedor" style="margin-top: 10px; font-weight: bold; color: #007bff;"></div>
 
-        
         <button type="submit" class="btn-continuar">Continuar</button>
       </form>
     </div>
   </div>
   
-  
-  
   <script>
 // Objeto para gestionar el carrito (versión mejorada)
 const carritoManager = {
   carrito: [],
-  tasaCambio: 340.0, // Tasa USD a CUP
+  tasaCambio: 1.0, // Tasa USD a CUP (1:1 para precios directos en CUP)
   
   init() {
     this.cargarCarrito();
@@ -217,7 +212,6 @@ const carritoManager = {
     const nota = document.getElementById('nota').value;
     const nombreBeneficiario = document.getElementById('nombre-beneficiario').value;
     const telefonoBeneficiario = document.getElementById('telefono-beneficiario').value;
-    const metodoPago = document.getElementById('metodo-pago').value;
 
     console.log('Datos del formulario:', {
       nombreComprador,
@@ -226,19 +220,19 @@ const carritoManager = {
       direccionEntrega,
       nota,
       nombreBeneficiario,
-      telefonoBeneficiario,
-      metodoPago
+      telefonoBeneficiario
     });
 
-    const totalOriginal = this.carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+    // Calcular total en CUP
+    const totalCUP = this.carrito.reduce((sum, item) => sum + (item.precio * item.cantidad * this.tasaCambio), 0);
     let descuento = 0;
-    let totalConDescuento = totalOriginal;
+    let totalConDescuento = totalCUP;
 
     const hoy = new Date();
     const fechaLimite = new Date('2025-06-15');
     if (hoy <= fechaLimite) {
-      descuento = totalOriginal * 0.06;
-      totalConDescuento = totalOriginal - descuento;
+      descuento = totalCUP * 0.06;
+      totalConDescuento = totalCUP - descuento;
     }
 
     let mensaje = `Nuevo Pedido\n\n`;
@@ -258,7 +252,7 @@ const carritoManager = {
     if (nota) {
       mensaje += `• Nota: ${nota}\n`;
     }
-    mensaje += `• Método de Pago: ${metodoPago}\n\n`;
+    mensaje += `• Moneda: CUP (Pesos Cubanos)\n\n`;
 
     const vendedor = localStorage.getItem("vendedor");
     if (vendedor) {
@@ -268,23 +262,24 @@ const carritoManager = {
     }
 
     mensaje += `Información de Pago:\n`;
-    mensaje += `Total sin descuento: ${totalOriginal.toFixed(2)} USD\n`;
+    mensaje += `Total sin descuento: ${totalCUP.toFixed(2)} CUP\n`;
 
     if (descuento > 0) {
-      mensaje += `🎉 Descuento Día de los Padres (6%): -${descuento.toFixed(2)} USD\n`;
-      mensaje += `💰 Total a pagar con descuento: ${totalConDescuento.toFixed(2)} USD\n`;
+      mensaje += `🎉 Descuento Día de los Padres (6%): -${descuento.toFixed(2)} CUP\n`;
+      mensaje += `💰 Total a pagar con descuento: ${totalConDescuento.toFixed(2)} CUP\n`;
       mensaje += `*Promoción válida hasta el 15 de junio por el Día de los Padres.*\n\n`;
     } else {
-      mensaje += `Total a pagar: ${totalOriginal.toFixed(2)} USD\n`;
+      mensaje += `Total a pagar: ${totalCUP.toFixed(2)} CUP\n`;
     }
     mensaje += `Por favor en minutos recibirá la cuenta a transferir realice la transferencia y envíe el comprobante por este medio.\n\n`;
     mensaje += `Productos:\n\n`;
     
     this.carrito.forEach(prod => {
-      mensaje += `• ${prod.cantidad}x ${prod.nombre} - ${(prod.precio * prod.cantidad).toFixed(2)} USD\n`;
+      const precioCUP = prod.precio * this.tasaCambio;
+      mensaje += `• ${prod.cantidad}x ${prod.nombre} - ${(precioCUP * prod.cantidad).toFixed(2)} CUP\n`;
     });
 
-    mensaje += `\nTotal a Pagar: ${totalConDescuento.toFixed(2)} USD\n`;
+    mensaje += `\nTotal a Pagar: ${totalConDescuento.toFixed(2)} CUP\n`;
     mensaje += `⏱️ Tiempo estimado de entrega: de 24 a 48 horas (siempre trataremos que sea el mismo día).`;
 
     console.log('Mensaje generado:', mensaje);
@@ -314,6 +309,21 @@ const carritoManager = {
   },
   
   setupEventListeners() {
+    // Event listener para el formulario
+    document.getElementById('formulario-pedido')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      console.log('Formulario enviado');
+      this.procesarPedido();
+    });
+
+    // Event listener para el botón Continuar (como respaldo)
+    document.querySelector('.btn-continuar')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('Botón Continuar clicado');
+      this.procesarPedido();
+    });
+
+    // Otros event listeners
     document.addEventListener('click', (e) => {
       if (e.target.closest('.btn-cantidad')) {
         const button = e.target.closest('.btn-cantidad');
@@ -365,19 +375,6 @@ const carritoManager = {
         return;
       }
     });
-    
-    document.getElementById('formulario-pedido')?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      console.log('Formulario enviado');
-      this.procesarPedido();
-    });
-
-    // Respaldo para el botón Continuar
-    document.querySelector('.btn-continuar')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      console.log('Botón Continuar clicado');
-      this.procesarPedido();
-    });
   },
 
   cambiarCantidad(id, delta) {
@@ -416,7 +413,7 @@ const carritoManager = {
           <p>Tu carrito está vacío</p>
         </div>
       `;
-      if (totalElem) totalElem.textContent = "USD 0.00";
+      if (totalElem) totalElem.textContent = "CUP 0.00";
       
       const btnProcesar = document.getElementById('pedir-whatsapp');
       if (btnProcesar) btnProcesar.disabled = true;
@@ -427,17 +424,21 @@ const carritoManager = {
     const btnProcesar = document.getElementById('pedir-whatsapp');
     if (btnProcesar) btnProcesar.disabled = false;
     
-    let total = 0;
+    let totalCUP = 0;
     
     this.carrito.forEach(item => {
+      const precioCUP = item.precio * this.tasaCambio;
+      const subtotalCUP = precioCUP * item.cantidad;
+      totalCUP += subtotalCUP;
+      
       const itemElement = document.createElement('div');
       itemElement.className = 'item-carrito';
       itemElement.innerHTML = `
         <img src="images/${item.imagen}" alt="${item.nombre}">
         <div class="item-info">
           <h4>${item.nombre}</h4>
-          <p>USD ${item.precio.toFixed(2)} x ${item.cantidad}</p>
-          <p class="subtotal">Subtotal: USD ${(item.precio * item.cantidad).toFixed(2)}</p>
+          <p>CUP ${precioCUP.toFixed(2)} x ${item.cantidad}</p>
+          <p class="subtotal">Subtotal: CUP ${subtotalCUP.toFixed(2)}</p>
         </div>
         <div class="contador-cantidad">
           <button class="btn-cantidad" data-action="decrease" data-id="${item.id}">-</button>
@@ -449,12 +450,10 @@ const carritoManager = {
         </button>
       `;
       container.appendChild(itemElement);
-      
-      total += item.precio * item.cantidad;
     });
     
     if (totalElem) {
-      totalElem.textContent = `USD ${total.toFixed(2)}`;
+      totalElem.textContent = `CUP ${totalCUP.toFixed(2)}`;
     }
   },
   
@@ -465,10 +464,24 @@ const carritoManager = {
   }
 };
 
+// Inicializar cuando el DOM esté cargado
 document.addEventListener('DOMContentLoaded', () => {
   carritoManager.init();
 });
 
+// Función para compartir página
+function sharePage() {
+  if (navigator.share) {
+    navigator.share({
+      title: document.title,
+      url: window.location.href
+    })
+    .then(() => console.log("Página compartida exitosamente"))
+    .catch((error) => console.error("Error al compartir:", error));
+  } else {
+    alert("La función de compartir no es soportada en este navegador.");
+  }
+}
 </script>
 </body>
 </html>

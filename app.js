@@ -33,9 +33,8 @@ window.addEventListener('resize', function() {
 // Llamar al cargar y al cambiar tamaño
 document.addEventListener('DOMContentLoaded', setMobileViewport);
 window.addEventListener('resize', setMobileViewport);
-// Tasa de cambio: 1 USD equivale a 340.0 CUP (ajusta según necesites)
-
-const tasaCambio = 340.0;
+// Tasa de cambio: 1 USD equivale a 1 CUP (precios directos en CUP)
+const tasaCambio = 1.0;
 
 // Ubicaciones disponibles
 const ubicaciones = {
@@ -316,6 +315,18 @@ if (categories.length > 0) {
   renderizarCombosOferta();
   renderizarOfertas();
   renderizarProductosRecientes();
+  
+  // Ocultar o eliminar el selector de método de pago
+  const metodoSelect = document.getElementById("metodo-pago");
+  if (metodoSelect) {
+    metodoSelect.style.display = "none";
+    
+    // También puedes crear un elemento fijo que muestre "CUP"
+    const monedaFija = document.createElement("div");
+    monedaFija.textContent = "Moneda: CUP (Pesos Cubanos)";
+    monedaFija.className = "moneda-cup-fija";
+    metodoSelect.parentNode.insertBefore(monedaFija, metodoSelect);
+  }
 });
 
 /// Obtener directamente el ref desde la URL actual, sin guardar en localStorage
@@ -330,10 +341,10 @@ function obtenerVendedorDesdeURL() {
 const productos = [
   // Ejemplo de producto con atributo municipios
   
-  {
+   /*{
     id: 1,
     nombre: " Carne de Res 2da Cat troceada ",
-    precio: 14.40,
+    precio: 4000,
     imagen: "res.png",
     description: "Bolsa de 1 Kg ",
     categoria: "Alimentos/Cárnicos",
@@ -369,7 +380,7 @@ const productos = [
   {
     id: 3,
     nombre: "Paquete de pollo 10 lb ",
-    precio: 13,
+    precio: 3850.00,
     imagen: "pollopqte.png",
     description: "paquete de 10 lb de muslo y contra muslo",
     categoria: "Alimentos/Cárnicos",
@@ -391,7 +402,7 @@ const productos = [
 {
   id: 4,
   nombre: "Lomo de cerdo deshuesado",
-  precio: 12,
+  precio: 3300,
   imagen: "lomo.png",
   description: "Lomo de cerdo Importado sellado en bolsa de 3 lb",
   categoria: "Alimentos/Cárnicos",
@@ -427,7 +438,7 @@ const productos = [
   {
     id: 5,
     nombre: "Masas de Cerdo",
-    precio: 7.40,
+    precio: 2600,
     imagen: "masas.png",
     description: "Bandeja de masas de cerdo  sellada al vacio de 2 lb",
     categoria: "Alimentos/Cárnicos",
@@ -438,7 +449,7 @@ const productos = [
   {
     id: 6,
     nombre: "Bistec de cerdo",
-    precio: 8.5,
+    precio: 2850,
     imagen: "bistec.png",
     description: "Bandeja de bistec sellada al vacio 2 lb",
     categoria: "Alimentos/Cárnicos",
@@ -481,7 +492,7 @@ const productos = [
   {
     id: 11,
     nombre: "Pechuga de pollo",
-    precio: 16,
+    precio: 4600,
     imagen: "pechuga.png",
     description: "Paquete de 2 kg",
     categoria: "Alimentos/Cárnicos",
@@ -502,7 +513,7 @@ const productos = [
   {
     id: 134,
     nombre: "Mortadela de pollo Seara",
-    precio: 2.30,
+    precio: 620,
     imagen: "mortadela.png",
     description: "Tubo de 500 gr",
     categoria: "Alimentos/Cárnicos",
@@ -512,7 +523,7 @@ const productos = [
   {
     id: 13,
     nombre: "Picadillo de pollo",
-    precio: 2.40,
+    precio: 420,
     imagen: "picadillo.png",
     description: "unidad de 400 gr",
     categoria: "Alimentos/Cárnicos",
@@ -524,7 +535,7 @@ const productos = [
   {
     id: 14,
     nombre: "Salchichas",
-    precio: 1.90,
+    precio: 450,
     imagen: "perritos.png",
     description: "paquete de 12 unidades",
     categoria: "Alimentos/Cárnicos",
@@ -535,7 +546,7 @@ const productos = [
   {
     id: 131,
     nombre: "Salchichas GuiBon ",
-    precio: 10.90,
+    precio: 3200,
     imagen: "60uds.png",
     description: "paquete de 60 unidades (3 Kg)",
     categoria: "Alimentos/Cárnicos",
@@ -546,7 +557,7 @@ const productos = [
   {
     id: 132,
     nombre: "Higado de Pollo ",
-    precio: 3.10,
+    precio: 880,
     imagen: "higado.png",
     description: "paquete de 1 Kg",
     categoria: "Alimentos/Cárnicos",
@@ -554,7 +565,7 @@ const productos = [
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
   },
-  {
+  /*{
     id: 133,
     nombre: "pierna de Cerdo ",
     precio: 55,
@@ -583,7 +594,7 @@ const productos = [
     municipios: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
-  },*/
+  },
   {
     id: 101,
     nombre: "Combo Mixto 1 ",
@@ -613,14 +624,14 @@ const productos = [
     categoria: "Combos Variados",
     reciente: 1, 
     municipios: [, 4,  7, 9, 10, 11,]
-  },
+  },*/
   // Alimentos/Líquidos
   {
     id: 17,
     nombre: "Cerveza Cristal",
-    precio: 22,
+    precio: 300,
     imagen: "cristal.png",
-    description: "Caja de 24 uds",
+    description: "1 uds",
     categoria: "Alimentos/Líquidos",
     municipios: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
@@ -629,7 +640,7 @@ const productos = [
   {
     id: 129,
     nombre: "Whisky Old Star",
-    precio: 5.80,
+    precio: 1650,
     imagen: "old.png",
     description: "Botella de 1 Lts",
     categoria: "Licoreria",
@@ -652,7 +663,7 @@ const productos = [
   {
     id: 19,
     nombre: "Cerveza Economica",
-    precio: 16,
+    precio: 220,
     imagen: "timber.png",
     description: "Caja de 24 uds",
     categoria: "Alimentos/Líquidos",
@@ -692,7 +703,7 @@ const productos = [
     nombre: "Malta Guajira",
     precio: 6.50,
     imagen: "guajira.png",
-    description: "Blister de 6 uds de 500 ml",
+    description: "1 ud",
     categoria: "Alimentos/Líquidos",
     municipios: [1, 2, 3,  12, 13,
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
@@ -701,7 +712,7 @@ const productos = [
   {
     id: 24,
     nombre: "Jugo",
-    precio: 14.40,
+    precio: 180,
     imagen: "200ml.png",
     description: "Caja de 24 uds de 200 ml",
     categoria: "Alimentos/Líquidos",
@@ -714,7 +725,7 @@ const productos = [
     nombre: "Jugo",
     precio: 1.60,
     imagen: "naranja.png",
-    description: "Jugo La estancia Sabor Naranja 1 L",
+    description: "Juego La estancia Sabor Naranja 1 L",
     categoria: "Alimentos/Líquidos",
     municipios: [ 4, 5, 6, 7, 8, 9, 10, 11,
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
@@ -723,7 +734,7 @@ const productos = [
    {
     id: 149,
     nombre: "Jugo Goliat",
-    precio: 1.95,
+    precio: 750,
     imagen: "peragoliat.png",
     description: "Jugo Goliat 1  L",
     categoria: "Alimentos/Líquidos",
@@ -732,7 +743,7 @@ const productos = [
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
   },
-  {
+ /* {
     id: 26,
     nombre: "Jugo",
     precio: 6.50,
@@ -801,11 +812,11 @@ const productos = [
     municipios: [ 4, 5, 6, 7, 8, 9, 10, 11,
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ],
-  },
+  },*/
   {
     id: 30,
     nombre: "Café",
-    precio: 5.9,
+    precio: 1750,
     imagen: "cafearoma.png",
     description: "Paquete de 250 gr",
     categoria: "Alimentos/Líquidos",
@@ -816,7 +827,7 @@ const productos = [
   {
     id: 76,
     nombre: "Café Expreso ",
-    precio: 5.6,
+    precio: 1700,
     imagen: "cafenezka.png",
     description: "Paquete de 250 gr",
     categoria: "Alimentos/Líquidos",
@@ -828,7 +839,7 @@ const productos = [
   {
     id: 130,
     nombre: "Café La Llave ",
-    precio: 6.9,
+    precio: 2400,
     imagen: "lallave.png",
     description: "Paquete de 283 gr",
     categoria: "Alimentos/Líquidos",
@@ -838,7 +849,7 @@ const productos = [
     
   },
   // Alimentos/Otros
-  {
+  /*{
     id: 78,
     nombre: "Ajo Finamente picado Badia ",
     precio: 2.60,
@@ -849,12 +860,12 @@ const productos = [
     municipios: [ 4, 5, 6, 7, 8, 9, 10, 11,
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
-  },
+  },*/
 
   {
     id: 127,
     nombre: "Maíz dulce en granos  ",
-    precio: 1.70,
+    precio: 580,
     imagen: "maizdulce.png",
     description: "lata de 445 gr ",
     categoria: "Enlatados y conservas",
@@ -866,7 +877,7 @@ const productos = [
   {
     id: 80,
     nombre: "Jugo de Naranja Agria Badia ",
-    precio: 2.60,
+    precio: 750,
     imagen: "naranjabadia.png",
     description: "Pomo de 10 OZ ",
     categoria: "Aderezo y condimentos",
@@ -878,7 +889,7 @@ const productos = [
   {
     id: 81,
     nombre: "ketchup kurtz ",
-    precio: 2.95,
+    precio: 950,
     imagen: "ketchupkurtz.png",
     description: "Pomo de 10 OZ ",
     categoria: "Aderezo y condimentos",
@@ -890,7 +901,7 @@ const productos = [
   {
     id: 82,
     nombre: "Chicharos verdes Del Monte ",
-    precio: 1.95,
+    precio: 750,
     imagen: "chicharodelmonte.png",
     description: "Bolsa de 16 OZ ",
     categoria: "Granos",
@@ -902,7 +913,7 @@ const productos = [
   {
     id: 83,
     nombre: "Alubias Del Monte ",
-    precio: 2.40,
+    precio: 750,
     imagen: "alubiasdelmonte.png",
     description: "Bolsa de 16 OZ ",
     categoria: "Granos",
@@ -911,7 +922,7 @@ const productos = [
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
   },
-  {
+  /*{
     id: 84,
     nombre: "Lentejas Goya ",
     precio: 2.40,
@@ -950,7 +961,7 @@ const productos = [
   {
     id: 87,
     nombre: "Botella de Aceite",
-    precio: 3.20,
+    precio: 990,
     imagen: "aceite.png",
     description: "Botella  de 1 L ",
     categoria: "Aderezo y condimentos",
@@ -959,7 +970,7 @@ const productos = [
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
   },
-  {
+  /*{
     id: 147,
     nombre: "Botella de Aceite",
     precio: 1.60,
@@ -1081,7 +1092,7 @@ const productos = [
   {
     id: 33,
     nombre: "Mayonesa Celorio",
-    precio: 4.20,
+    precio: 1500,
     imagen: "mayonesa.png",
     description: "Pomo de 500 gr",
     categoria: "Alimentos/Otros",
@@ -1093,7 +1104,7 @@ const productos = [
     {
     id: 109,
     nombre: "Pomo de Aceitunas",
-    precio: 3.00,
+    precio: 1100,
     imagen: "aceituna290gr.png",
     description: "Pomo de 290 gr",
     categoria: "Enlatados y conservas",
@@ -1105,7 +1116,7 @@ const productos = [
   {
     id: 34,
     nombre: "Sazón Completo Nezka ",
-    precio: 4.20,
+    precio: 1500,
     imagen: "sazonmixto.png",
     description: "Pomo de 250 gr",
     categoria: "Aderezo y condimentos",
@@ -1117,7 +1128,7 @@ const productos = [
   {
     id: 35,
     nombre: "Spaguetis",
-    precio: 1.55,
+    precio: 350,
     imagen: "spaguetis.png",
     description: "Bolsa de 500 gr",
     categoria: "Productos mixtos",
@@ -1128,7 +1139,7 @@ const productos = [
   {
     id: 36,
     nombre: "Codito",
-    precio: 1.55,
+    precio: 350,
     imagen: "codito.png",
     description: "Bolsa de 500 gr",
     categoria: "Productos mixtos",
@@ -1139,14 +1150,14 @@ const productos = [
   {
     id: 37,
     nombre: "Azucar Blanca",
-    precio: 2,
+    precio: 580,
     imagen: "azucar1kg.png",
     description: "bolsa de 1 kg",
     categoria: "Granos",
     municipios: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
     },
-  {
+ /* {
     id: 38,
     nombre: "Frijol Negro ",
     precio: 8,
@@ -1167,11 +1178,11 @@ const productos = [
     municipios: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
-  },
+  },*/
   {
     id: 136,
     nombre: "Frijol Negro ",
-    precio: 1.80,
+    precio: 400,
     imagen: "frijol1kg.png",
     description: "bolsa de 500 gr",
     categoria: "Granos",
@@ -1179,7 +1190,7 @@ const productos = [
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
   },
-  {
+  /*{
     id: 40,
     nombre: "Frijol Colorado ",
     precio: 8,
@@ -1200,11 +1211,11 @@ const productos = [
     municipios: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
-  },
+  },*/
   {
     id: 42,
     nombre: "Arroz Brasileño",
-    precio: 2.2,
+    precio: 620,
     imagen: "arroz1kg.png",
     description: "bolsa de 1 kg",
     categoria: "Granos",
@@ -1215,7 +1226,7 @@ const productos = [
   {
     id: 43,
     nombre: "Fideos",
-    precio: 1.80,
+    precio: 320,
     imagen: "fideos.png",
     description: "bolsa de 500 gr",
     categoria: "Productos mixtos",
@@ -1226,7 +1237,7 @@ const productos = [
  {
     id: 38,
     nombre: "Sopa Intantanea",
-    precio: 0.70,
+    precio: 170,
     imagen: "sopa.png",
     description: "Sabor pollo sobre 75 gr",
     categoria: "Productos mixtos",
@@ -1250,7 +1261,7 @@ const productos = [
   {
     id: 45,
     nombre: "Cartón de huevos",
-    precio: 9.40,
+    precio: 2800,
     imagen: "huevo.png",
     description: "30 uds frescos 100 % orgánicos",
     categoria: "Productos mixtos",
@@ -1261,7 +1272,7 @@ const productos = [
   {
     id: 201,
     nombre: "Gelatina ",
-    precio: 1.1,
+    precio: 260,
     imagen: "gelatina.png",
     description: "Bolsa de gelatina 75 gr ",
     categoria: "Alimentos/Del Confi",
@@ -1287,7 +1298,7 @@ const productos = [
   {
     id: 41,
     nombre: "Queso Parmesano",
-    precio:6.20,
+    precio:1800,
     imagen: "quesoparmesano.png",
     description: "Pomo de 8 Oz",
     reciente: 1,
@@ -1307,7 +1318,7 @@ const productos = [
    {
     id:151 ,
     nombre: "Yogurt Probiótico",
-    precio: 3.1,
+    precio: 1200,
     imagen: "yogurt1l.png",
     description: "Pomo de 1L",
     categoria: "Alimentos/Lácteos",
@@ -1319,7 +1330,7 @@ const productos = [
    {
     id:152 ,
     nombre: "Yogurt Probiótico",
-    precio: 0.6,
+    precio: 250,
     imagen: "yogurtvasito.png",
     description: "Vasito de 180 ml",
     categoria: "Alimentos/Lácteos",
@@ -1353,7 +1364,7 @@ const productos = [
   {
     id: 404,
     nombre: "Helado",
-    precio: 12,
+    precio: 2500,
     imagen: "helado.png",
     description: "Cubeta de 3L",
     categoria: "Alimentos/Lácteos",
@@ -1365,7 +1376,7 @@ const productos = [
   {
     id: 100,
     nombre: "Leche en Polvo",
-    precio: 8.50,
+    precio: 2200,
     imagen: "lechepolvomu.png",
     description: "Bolsa de 1 kg",
     categoria: "Alimentos/Lácteos",
@@ -1376,7 +1387,7 @@ const productos = [
   {
     id: 46,
     nombre: "Leche Condensada",
-    precio: 1.90,
+    precio: 580,
     imagen: "condensada.png",
     description: "Lata con abre fácil",
     categoria: "Alimentos/Lácteos",
@@ -1389,7 +1400,7 @@ const productos = [
   {
     id: 47,
     nombre: "Ajo",
-    precio: 4.7,
+    precio: 880,
     imagen: "ajo.png",
     description: "Bolsa de 10 cabezas",
     categoria: "Alimentos/Del Agro",
@@ -1400,7 +1411,7 @@ const productos = [
   {
     id: 48,
     nombre: "Malanga",
-    precio: 3,
+    precio: 1000,
     imagen: "malanga.png",
     description: "bolsa de 5 lb",
     categoria: "Alimentos/Del Agro",
@@ -1411,7 +1422,7 @@ const productos = [
   {
     id: 49,
     nombre: "cebolla",
-    precio: 3.30,
+    precio: 1100,
     imagen: "cebolla.png",
     description: "bolsa de 2.5 lb aproximadamente ",
     categoria: "Alimentos/Del Agro",
@@ -1449,9 +1460,9 @@ const productos = [
   {
     id: 53,
     nombre: "Frazada de limpiar suelo",
-    precio: 2.4,
+    precio: 280,
     imagen: "frazada.png",
-    description: "2 unidades",
+    description: "1 unidad",
     categoria: "Del Hogar",
     municipios: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
@@ -1460,7 +1471,7 @@ const productos = [
   {
     id: 116,
     nombre: "Detergente Liquido Lavaloza",
-    precio: 2.60,
+    precio: 600,
     imagen: "lavaloza.png",
     description: "Pomo de 500 ml",
     categoria: "Del Hogar",
@@ -1472,7 +1483,7 @@ const productos = [
     {
     id: 117,
     nombre: "Detergente Liquido STB",
-    precio: 3.20,
+    precio: 1600,
     imagen: "stbliquido.png",
     description: "Bolsa de 1 L",
     categoria: "Del Hogar",
@@ -1485,7 +1496,7 @@ const productos = [
   {
     id: 55,
     nombre: "Detergente polvo Multiuso",
-    precio: 2.6,
+    precio: 760,
     imagen: "detergente.png",
     description: "bolsa de 1 Kg ",
     categoria: "Del Hogar",
@@ -1496,7 +1507,7 @@ const productos = [
   {
     id: 56,
     nombre: "Jabón De Olor",
-    precio: 0.9,
+    precio: 160,
     imagen: "jabon.png",
     description: "por unidades de 100 gr",
     categoria: "Del Hogar",
@@ -1508,7 +1519,7 @@ const productos = [
   {
     id: 57,
     nombre: "Papel Higienico",
-    precio: 2.2,
+    precio: 750,
     imagen: "papel.png",
     description: "bolsa con 4 unidad sellada",
     categoria: "Del Hogar",
@@ -1516,7 +1527,7 @@ const productos = [
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
   },
-  {
+  /*{
     id: 58,
     nombre: "Perlas de olor para ropa",
     precio: 3.5,
@@ -1576,7 +1587,7 @@ const productos = [
   {
     id: 94,
     nombre: "Cajas de tv Hd",
-    precio: 65,
+    precio: 12000,
     imagen: "cajita.png",
     description: "Caja descodificadora Hd",
     categoria: "De Electrodomésticos",
@@ -1588,7 +1599,7 @@ const productos = [
   {
     id: 95,
     nombre: "Olla reina Milexus ",
-    precio: 100,
+    precio: 30000,
     imagen: "reina.png",
     description: "Olla reina de 6L Milexus",
     categoria: "De Electrodomésticos",
@@ -1600,7 +1611,7 @@ const productos = [
   {
     id: 96,
     nombre: "Olla Arrocera ",
-    precio: 60 ,
+    precio: 20000 ,
     imagen: "arrocera.png",
     description: "Olla arrocera de 1,8 l Milexus",
     categoria: "De Electrodomésticos",
@@ -1609,7 +1620,7 @@ const productos = [
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
   },
-  {
+  /*{
     id: 97,
     nombre: "Freidora de aire  ",
     precio: 100 ,
@@ -1648,7 +1659,7 @@ const productos = [
   {
     id: 99,
     nombre: "Fogon Infrarrojo   ",
-    precio: 100,
+    precio: 24000,
     imagen: "fogoninfra.png",
     description: "Fogon Infrarrojo 1300 W    ",
     categoria: "De Electrodomésticos",
@@ -1680,7 +1691,7 @@ const productos = [
     municipios: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
-  },*/
+  },
   {
     id: 105,
     nombre: "Lavadora Semiautomática Milexus 7 L   ",
@@ -1704,7 +1715,7 @@ const productos = [
     municipios: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
-  },*/
+  },
   
   {
     id: 63,
@@ -1762,7 +1773,7 @@ const productos = [
     description: "Tv inteligente Milexus 55 pulgadas",
     categoria: "De Electrodomésticos",
     municipios: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-  },*/
+  },
   {
     id: 67,
     nombre: "Batidora Milexus",
@@ -1836,7 +1847,7 @@ const productos = [
    {
     id: 121,
     nombre: "Bombom Truffle de Chocolate",
-    precio: 8.60,
+    precio: 2200,
     imagen: "trufle.png",
     description: "Bolsa de 35 uds  ",
     categoria: "Alimentos/Del Confi",
@@ -1844,7 +1855,7 @@ const productos = [
     reciente: 1, // Marcar como reciente
     
   },
-  {
+  /*{
     id: 122,
     nombre: "Galletas black out",
     precio: 2.20,
@@ -1887,7 +1898,7 @@ const productos = [
     municipios: [1,2,3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
     reciente: 1, // Marcar como reciente
     
-  },*/
+  },
    {
     id: 125,
     nombre: "Waffer de Vainilla, fresa y chocolate",
@@ -1898,11 +1909,11 @@ const productos = [
     municipios: [1,2,3, 4, 5, 6, 7, 8, 9, 10, 11,12,13,14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27],
     reciente: 1, // Marcar como reciente
     
-  },
+  },*/
    {
     id: 126,
     nombre: "Caja de sorbeticos  de Vainilla",
-    precio: 7.50,
+    precio: 2000,
     imagen: "sorbetico.png",
     description: "Caja de 12 paquetes de 40  gr ",
     categoria: "Alimentos/Del Confi",
@@ -1913,7 +1924,7 @@ const productos = [
    {
     id: 110,
     nombre: "Galletas Snack Crackers",
-    precio: 2.50,
+    precio: 900,
     imagen: "snackcrackers.png",
     description: "Caja de 3 paquetes 189 gr",
     categoria: "Alimentos/Del Confi",
@@ -1924,7 +1935,7 @@ const productos = [
   {
     id: 111,
     nombre: "Donas de Fresa 🍓 ",
-    precio: 7.50,
+    precio: 2200,
     imagen: "donutfresa.png",
     description: "Caja de 24 unidades ",
     categoria: "Alimentos/Del Confi",
@@ -1957,7 +1968,7 @@ const productos = [
   {
     id: 72,
     nombre: "Galletas Saltine Nezka",
-    precio: 3.50,
+    precio: 1200,
     imagen: "saltine.png",
     description: "Cajita de 454 gr",
     categoria: "Alimentos/Del Confi",
@@ -2143,58 +2154,6 @@ function buscarYMostrarProductos() {
 }
 
 // Función modificada para renderizar una lista dada de productos
-function renderizarListaProductos(listaProductos) {
-  const fragment = document.createDocumentFragment();
-  
-  listaProductos.forEach(prod => {
-    const div = document.createElement("div");
-    div.className = "producto";
-    div.id = `producto-${prod.id}`;
-    div.dataset.id = prod.id;
-    div.dataset.categoria = prod.categoria;
-    const categoriaSinBarra = prod.categoria.replace(/[^a-zA-Z0-9]/g, '-');
-
-    if (prod.categoria === "Servicios") {
-      div.innerHTML = `
-        <div class="etiqueta-categoria ${categoriaSinBarra}">${prod.categoria}</div>
-        <img src="images/${prod.imagen}" alt="${prod.nombre}" loading="lazy">
-        <h3>${prod.nombre}</h3>
-        <a href="https://wa.me/5353933247?text=${encodeURIComponent("Me interesa una cotización para " + prod.nombre)}" 
-           target="_blank" class="btn-cotizacion">Cotización del Servicio</a>
-      `;
-    } else {
-      if (prod.descuento && prod.descuento > 0) {
-        const descuento = prod.descuento;
-        const precioOriginal = prod.precio;
-        const precioNuevo = precioOriginal * (1 - descuento / 100);
-        div.innerHTML = `
-          <div class="img-container">
-              <img src="images/${prod.imagen}" alt="${prod.nombre}" loading="lazy">
-              <div class="discount-label">Descuento ${descuento}%</div>
-          </div>
-          <div class="etiqueta-categoria ${categoriaSinBarra}">${prod.categoria}</div>
-          <h3>${prod.nombre}</h3>
-          <p class="precio-original">USD ${precioOriginal.toFixed(2)}</p>
-          <p class="precio-nuevo">USD ${precioNuevo.toFixed(2)}</p>
-          <button data-id="${prod.id}" class="btn-agregar">Agregar al carrito</button>
-        `;
-      } else {
-        div.innerHTML = `
-          <div class="etiqueta-categoria ${categoriaSinBarra}">${prod.categoria}</div>
-          <img src="images/${prod.imagen}" alt="${prod.nombre}" loading="lazy">
-          <h3>${prod.nombre}</h3>
-          <p class="precio-nuevo">USD ${prod.precio.toFixed(2)}</p>
-          <button data-id="${prod.id}" class="btn-agregar">Agregar al carrito</button>
-        `;
-      }
-    }
-    fragment.appendChild(div);
-  });
-  
-  productosContainer.innerHTML = "";
-  productosContainer.appendChild(fragment);
-}
-
 function renderizarListaProductos(listaProductos, contenedor = productosContainer) {
   const fragment = document.createDocumentFragment();
   
@@ -2206,6 +2165,9 @@ function renderizarListaProductos(listaProductos, contenedor = productosContaine
     div.dataset.categoria = prod.categoria;
     const categoriaSinBarra = prod.categoria.replace(/[^a-zA-Z0-9]/g, '-');
 
+    // Convertir precios a CUP
+    const precioCUP = prod.precio * tasaCambio;
+    
     if (prod.categoria === "Servicios") {
       div.innerHTML = `
         <div class="etiqueta-categoria ${categoriaSinBarra}">${prod.categoria}</div>
@@ -2217,8 +2179,8 @@ function renderizarListaProductos(listaProductos, contenedor = productosContaine
     } else {
       if (prod.descuento && prod.descuento > 0) {
         const descuento = prod.descuento;
-        const precioOriginal = prod.precio;
-        const precioNuevo = precioOriginal * (1 - descuento / 100);
+        const precioOriginalCUP = precioCUP;
+        const precioNuevoCUP = precioOriginalCUP * (1 - descuento / 100);
         div.innerHTML = `
           <div class="img-container">
               <img src="images/${prod.imagen}" alt="${prod.nombre}" loading="lazy">
@@ -2226,8 +2188,8 @@ function renderizarListaProductos(listaProductos, contenedor = productosContaine
           </div>
           <div class="etiqueta-categoria ${categoriaSinBarra}">${prod.categoria}</div>
           <h3>${prod.nombre}</h3>
-          <p class="precio-original">USD ${precioOriginal.toFixed(2)}</p>
-          <p class="precio-nuevo">USD ${precioNuevo.toFixed(2)}</p>
+          <p class="precio-original">CUP ${precioOriginalCUP.toFixed(2)}</p>
+          <p class="precio-nuevo">CUP ${precioNuevoCUP.toFixed(2)}</p>
           <button data-id="${prod.id}" class="btn-agregar">Agregar al carrito</button>
         `;
       } else {
@@ -2235,7 +2197,7 @@ function renderizarListaProductos(listaProductos, contenedor = productosContaine
           <div class="etiqueta-categoria ${categoriaSinBarra}">${prod.categoria}</div>
           <img src="images/${prod.imagen}" alt="${prod.nombre}" loading="lazy">
           <h3>${prod.nombre}</h3>
-          <p class="precio-nuevo">USD ${prod.precio.toFixed(2)}</p>
+          <p class="precio-nuevo">CUP ${precioCUP.toFixed(2)}</p>
           <button data-id="${prod.id}" class="btn-agregar">Agregar al carrito</button>
         `;
       }
@@ -2345,11 +2307,14 @@ function renderizarCombosOferta() {
     comboDiv.className = "producto combo-temporal";
     comboDiv.dataset.id = combo.id;
 
+    // Convertir precios a CUP
+    const precioCUP = combo.precio * tasaCambio;
+    
     // Cálculo del precio con o sin descuento
     const tieneDescuento = combo.descuento && combo.descuento > 0;
-    const precioConDescuento = tieneDescuento
-      ? (combo.precio * (1 - combo.descuento / 100)).toFixed(2)
-      : combo.precio.toFixed(2);
+    const precioConDescuentoCUP = tieneDescuento
+      ? (precioCUP * (1 - combo.descuento / 100)).toFixed(2)
+      : precioCUP.toFixed(2);
 
     // Estructura HTML del combo (sin temporizador)
     comboDiv.innerHTML = `
@@ -2359,8 +2324,8 @@ function renderizarCombosOferta() {
       </div>
       <div class="etiqueta-categoria Combos-Temporales">${combo.categoria}</div>
       <h3>${combo.nombre}</h3>
-      ${tieneDescuento ? `<p class="precio-original">USD ${combo.precio.toFixed(2)}</p>` : ""}
-      <p class="precio-nuevo">USD ${precioConDescuento}</p>
+      ${tieneDescuento ? `<p class="precio-original">CUP ${precioCUP.toFixed(2)}</p>` : ""}
+      <p class="precio-nuevo">CUP ${precioConDescuentoCUP}</p>
       <button data-id="${combo.id}" class="btn-agregar">Agregar al carrito</button>
     `;
 
@@ -2413,6 +2378,9 @@ function renderizarProductos(categoria = "todas") {
     div.dataset.categoria = prod.categoria;
     const categoriaSinBarra = prod.categoria.replace(/[^a-zA-Z0-9]/g, '-');
 
+    // Convertir precios a CUP
+    const precioCUP = prod.precio * tasaCambio;
+    
     if (prod.categoria === "Servicios") {
       div.innerHTML = `
         <div class="etiqueta-categoria ${categoriaSinBarra}">${prod.categoria}</div>
@@ -2424,8 +2392,8 @@ function renderizarProductos(categoria = "todas") {
     } else {
       if (prod.descuento && prod.descuento > 0) {
         const descuento = prod.descuento;
-        const precioOriginal = prod.precio;
-        const precioNuevo = precioOriginal * (1 - descuento / 100);
+        const precioOriginalCUP = precioCUP;
+        const precioNuevoCUP = precioOriginalCUP * (1 - descuento / 100);
         div.innerHTML = `
           <div class="img-container">
               <img src="images/${prod.imagen}" alt="${prod.nombre}" loading="lazy">
@@ -2433,8 +2401,8 @@ function renderizarProductos(categoria = "todas") {
           </div>
           <div class="etiqueta-categoria ${categoriaSinBarra}">${prod.categoria}</div>
           <h3>${prod.nombre}</h3>
-          <p class="precio-original">USD ${precioOriginal.toFixed(2)}</p>
-          <p class="precio-nuevo">USD ${precioNuevo.toFixed(2)}</p>
+          <p class="precio-original">CUP ${precioOriginalCUP.toFixed(2)}</p>
+          <p class="precio-nuevo">CUP ${precioNuevoCUP.toFixed(2)}</p>
           <button data-id="${prod.id}" class="btn-agregar">Agregar al carrito</button>
         `;
       } else {
@@ -2442,7 +2410,7 @@ function renderizarProductos(categoria = "todas") {
           <div class="etiqueta-categoria ${categoriaSinBarra}">${prod.categoria}</div>
           <img src="images/${prod.imagen}" alt="${prod.nombre}" loading="lazy">
           <h3>${prod.nombre}</h3>
-          <p class="precio-nuevo">USD ${prod.precio.toFixed(2)}</p>
+          <p class="precio-nuevo">CUP ${precioCUP.toFixed(2)}</p>
           <button data-id="${prod.id}" class="btn-agregar">Agregar al carrito</button>
         `;
       }
@@ -2473,9 +2441,12 @@ function renderizarOfertas() {
     const div = document.createElement("div");
     div.className = "producto";
     div.dataset.id = prod.id;
+    
+    // Convertir precios a CUP
+    const precioCUP = prod.precio * tasaCambio;
     const descuento = prod.descuento;
-    const precioOriginal = prod.precio;
-    const precioNuevo = precioOriginal * (1 - descuento / 100);
+    const precioOriginalCUP = precioCUP;
+    const precioNuevoCUP = precioOriginalCUP * (1 - descuento / 100);
     const categoriaSinBarra = prod.categoria.replace(/[^a-zA-Z0-9]/g, '-');
 
     div.innerHTML = `
@@ -2485,8 +2456,8 @@ function renderizarOfertas() {
       </div>
       <div class="etiqueta-categoria ${categoriaSinBarra}">${prod.categoria}</div>
       <h3>${prod.nombre}</h3>
-      <p class="precio-original">USD ${precioOriginal.toFixed(2)}</p>
-      <p class="precio-nuevo">USD ${precioNuevo.toFixed(2)}</p>
+      <p class="precio-original">CUP ${precioOriginalCUP.toFixed(2)}</p>
+      <p class="precio-nuevo">CUP ${precioNuevoCUP.toFixed(2)}</p>
       <button data-id="${prod.id}" class="btn-agregar">Agregar al carrito</button>
     `;
     fragment.appendChild(div);
@@ -2517,6 +2488,9 @@ function renderizarProductosRecientes() {
     const div = document.createElement("div");
     div.className = "producto";
     div.dataset.id = prod.id;
+    
+    // Convertir precios a CUP
+    const precioCUP = prod.precio * tasaCambio;
     const categoriaSinBarra = prod.categoria.replace(/[^a-zA-Z0-9]/g, "-");
 
     div.innerHTML = `
@@ -2525,7 +2499,7 @@ function renderizarProductosRecientes() {
       </div>
       <div class="etiqueta-categoria ${categoriaSinBarra}">${prod.categoria}</div>
       <h3>${prod.nombre}</h3>
-      <p class="precio">USD ${prod.precio.toFixed(2)}</p>
+      <p class="precio">CUP ${precioCUP.toFixed(2)}</p>
       <button data-id="${prod.id}" class="btn-agregar">Agregar al carrito</button>
     `;
     fragment.appendChild(div);
@@ -2597,21 +2571,23 @@ function renderizarCarrito() {
         <a href="index.html" class="btn-seguir-comprando">Seguir comprando</a>
       </div>
     `;
-    if (totalElem) totalElem.textContent = "USD 0.00";
+    if (totalElem) totalElem.textContent = "CUP 0.00";
     return;
   }
 
   const fragment = document.createDocumentFragment();
   
   carrito.forEach(prod => {
+    // Convertir precios a CUP
+    const precioCUP = prod.precio * tasaCambio;
     const div = document.createElement("div");
     div.className = "item-carrito";
     div.innerHTML = `
       <img src="images/${prod.imagen}" alt="${prod.nombre}" onerror="this.src='images/placeholder.png'">
       <div class="item-info">
         <h4>${prod.nombre}</h4>
-        <p>USD ${prod.precio.toFixed(2)} x ${prod.cantidad}</p>
-        <p class="subtotal">Subtotal: USD ${(prod.precio * prod.cantidad).toFixed(2)}</p>
+        <p>CUP ${precioCUP.toFixed(2)} x ${prod.cantidad}</p>
+        <p class="subtotal">Subtotal: CUP ${(precioCUP * prod.cantidad).toFixed(2)}</p>
       </div>
       <div class="contador-cantidad">
         <button class="btn-cambiar" data-id="${prod.id}" data-delta="-1">-</button>
@@ -2627,16 +2603,12 @@ function renderizarCarrito() {
 
   itemsCarrito.appendChild(fragment);
   
-  // Calcular total según método de pago
-  const metodoPago = document.getElementById("metodo-pago")?.value || "USD";
+  // Calcular total en CUP
   const totalUSD = carrito.reduce((acc, prod) => acc + (prod.precio * prod.cantidad), 0);
+  const totalCUP = totalUSD * tasaCambio;
   
   if (totalElem) {
-    if (metodoPago.includes("CUP")) {
-      totalElem.textContent = `CUP ${(totalUSD * tasaCambio).toFixed(2)}`;
-    } else {
-      totalElem.textContent = `USD ${totalUSD.toFixed(2)}`;
-    }
+    totalElem.textContent = `CUP ${totalCUP.toFixed(2)}`;
   }
 }
 
@@ -2706,19 +2678,8 @@ function enviarPedidoPorWhatsapp() {
   const nota = document.getElementById("nota").value;
   const nombreBeneficiario = document.getElementById("nombre-beneficiario").value;
   const telefonoBeneficiario = document.getElementById("telefono-beneficiario").value;
-  const metodoPago = document.getElementById("metodo-pago").value;
   const totalUSD = calcularTotalUSD();
-
-  let totalMensaje;
-  let moneda;
-  if (metodoPago.indexOf("CUP") !== -1) {
-    totalMensaje = totalUSD * tasaCambio;
-    moneda = "CUP";
-  } else {
-    totalMensaje = totalUSD;
-    moneda = "USD";
-  }
-  const totalTexto = totalMensaje.toFixed(2) + " " + moneda;
+  const totalCUP = totalUSD * tasaCambio;
 
   let mensaje = `Nuevo Pedido\n\n`;
   mensaje += `Datos del Comprador:\n\n`;
@@ -2737,7 +2698,7 @@ function enviarPedidoPorWhatsapp() {
   if (nota) {
     mensaje += `• Nota: ${nota}\n`;
   }
-  mensaje += `• Método de Pago: ${metodoPago}\n\n`;
+  mensaje += `• Moneda: CUP (Pesos Cubanos)\n\n`;
 
   // Incluir el vendedor si existe
   const vendedor = localStorage.getItem("vendedor");
@@ -2746,17 +2707,15 @@ function enviarPedidoPorWhatsapp() {
   }
 
   mensaje += `Información de Pago:\n`;
-  mensaje += `Total a pagar: ${totalTexto}\n`;
+  mensaje += `Total a pagar: ${totalCUP.toFixed(2)} CUP\n`;
   mensaje += `Por favor en minutos recibirá la cuenta a transferir realice la transferencia y envíe el comprobante por este medio.\n\n`;
   mensaje += `Productos:\n\n`;
   carrito.forEach(prod => {
-    let productTotal = prod.cantidad * prod.precio;
-    if (moneda === "CUP") {
-      productTotal *= tasaCambio;
-    }
-    mensaje += `• ${prod.cantidad}x ${prod.nombre} - ${productTotal.toFixed(2)} ${moneda}\n`;
+    const precioCUP = prod.precio * tasaCambio;
+    const productTotal = precioCUP * prod.cantidad;
+    mensaje += `• ${prod.cantidad}x ${prod.nombre} - ${productTotal.toFixed(2)} CUP\n`;
   });
-  mensaje += `\nTotal a Pagar: ${totalTexto} de 24 a 48 horas pedido completado, Siempre trataremos q sea en el día`;
+  mensaje += `\nTotal a Pagar: ${totalCUP.toFixed(2)} CUP. De 24 a 48 horas pedido completado, Siempre trataremos q sea en el día`;
 
   try {
     const mensajeCodificado = encodeURIComponent(mensaje);
@@ -2921,7 +2880,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
   // Mostrar los modales de ubicación en cada carga de página
-  mostrarModalProvincias();
+  mostrarModalUbicacion();
   // Capturar el vendedor desde la URL y guardarlo
   capturarVendedor();
 
@@ -2955,10 +2914,6 @@ document.addEventListener("DOMContentLoaded", () => {
           enviarPedidoPorWhatsapp();
         }
       });
-    }
-    const metodoSelect = document.getElementById("metodo-pago");
-    if (metodoSelect) {
-      metodoSelect.addEventListener("change", actualizarTotalSegunMetodo);
     }
   }
   const telefonoInput = document.getElementById("telefono");
@@ -3024,7 +2979,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Si no se encontró un municipio seleccionado y NO estamos en la página del carrito, se muestra el modal.
   if (!municipioGuardado && !isCartPage) {
-    mostrarModalProvincias();
+    mostrarModalUbicacion();
   }
 });
 document.querySelector(".close-button").addEventListener("click", () => {
