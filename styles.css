@@ -2289,3 +2289,40 @@ html, body {
     min-width: 75vw;
   }
 }
+/* Contenedor de la imagen para posicionar el descuento sobre ella */
+.img-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.img-container img {
+  width: 100%;
+  height: 100px; /* Reducida la altura */
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Ajusta la posición del cartel de descuento para que aparezca en una esquina sin tapar la imagen */
+.discount-label {
+  background: #ff9800;
+  color: #fff;
+  padding: 3px 8px;
+  font-size: 0.8em;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border-radius: 4px;
+  z-index: 2;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Para productos en oferta especial */
+.discount-label.oferta-especial {
+  background: #e53935; /* Rojo para ofertas especiales */
+}
+
+/* Para productos con descuento estándar */
+.discount-label.descuento {
+  background: #ff9800; /* Naranja para descuentos regulares */
+}
