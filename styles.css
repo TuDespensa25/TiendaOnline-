@@ -388,21 +388,21 @@ section {
   padding: 20px; /* Espacio interno */
 }
 
-/* Estilos para cada producto - TARJETAS MÁS PEQUEÑAS */
+/* Estilos para cada producto */
 .producto {
   background: var(--color-blanco);
-  border-radius: 8px;
-  padding: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 180px; /* Reducido de 300px */
-  height: 280px; /* Reducido de 400px */
-  flex: 0 0 auto;
-  margin: 0 8px;
+  width: 300px; /* Ancho fijo para cada producto */
+  height: 400px; /* Altura fija para cada producto */
+  flex: 0 0 auto; /* Evita que los productos se estiren */
+  margin: 0 10px; /* Espacio entre productos */
 }
 
 .producto:hover {
@@ -411,8 +411,8 @@ section {
 }
 
 .producto h3 {
-  font-size: 0.95em; /* Reducido de 1.2em */
-  margin: 6px 0;
+  font-size: 1.2em;
+  margin: 10px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -420,10 +420,9 @@ section {
 
 /* Precio sin descuento */
 .producto p {
-  font-size: 0.95em; /* Reducido de 1.1em */
+  font-size: 1.1em;
   color: var(--color-secundario);
   font-weight: bold;
-  margin: 4px 0;
 }
 
 /* Precio original tachado y precio nuevo */
@@ -442,12 +441,11 @@ section {
   background: var(--color-secundario);
   color: var(--color-blanco);
   border: none;
-  padding: 6px;
-  border-radius: 4px;
+  padding: 10px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s;
   width: 100%;
-  font-size: 0.9em;
 }
 
 .producto button:hover {
@@ -456,12 +454,12 @@ section {
 
 .etiqueta-categoria {
   background-color: #f0f0f0;
-  padding: 3px 6px;
-  border-radius: 3px;
-  font-size: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
   color: #333;
   display: block;
-  margin-bottom: 3px;
+  margin-bottom: 5px;
 }
 
 .De-Electrodom-sticos { background: #568cb9; }
@@ -991,10 +989,10 @@ footer {
 /* Estilos para los productos dentro del carrusel */
 .carrusel .producto {
   flex: 0 0 auto; /* Evita que los productos se estiren */
-  width: 160px; /* Reducido de 250px */
-  padding: 10px;
+  width: 250px; /* Ancho fijo para cada producto */
   background: var(--color-blanco);
   border-radius: 10px;
+  padding: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.3s, box-shadow 0.3s;
@@ -1175,7 +1173,7 @@ footer {
   margin-bottom: 2rem;
 }
 
-/* === CONTENEDOR OFERTAS === */
+/* === CONTENEDOR DE COMBOS === */
 .combos-container {
   display: flex;
   flex-wrap: wrap;
@@ -2145,7 +2143,7 @@ html, body {
 
 /* Estilo específico para productos recientes */
 #productos-recientes .producto {
-  min-width: 160px; /* Reducido de 200px */
+  min-width: 200px; /* Ancho mínimo para cada producto */
   flex: 0 0 auto; /* Evita que se estiren los items */
   border: 1px solid #e9e9e9;
   border-radius: 10px;
@@ -2262,67 +2260,6 @@ html, body {
     font-size: 12px;
   }
 }
-
-/* Ajustar imagen del producto */
-.producto img {
-  width: 100%;
-  height: 100px; /* Reducida la altura */
-  object-fit: contain;
-  border-radius: 6px;
-  margin-bottom: 8px;
-}
-
-/* Para móviles */
-@media (max-width: 768px) {
-  .producto {
-    width: 150px;
-    height: 250px;
-    margin: 0 5px;
-  }
-  
-  .producto img {
-    height: 90px;
-  }
-  
-  .combo-Oferta {
-    width: 75vw;
-    min-width: 75vw;
-  }
-}
-/* Contenedor de la imagen para posicionar el descuento sobre ella */
-.img-container {
-  position: relative;
-  overflow: hidden;
-}
-
-.img-container img {
-  width: 100%;
-  height: 100px; /* Reducida la altura */
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-/* Ajusta la posición del cartel de descuento para que aparezca en una esquina sin tapar la imagen */
-.discount-label {
-  background: #ff9800;
-  color: #fff;
-  padding: 3px 8px;
-  font-size: 0.8em;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  border-radius: 4px;
-  z-index: 2;
-  font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* Para productos en oferta especial */
-.discount-label.oferta-especial {
-  background: #e53935; /* Rojo para ofertas especiales */
-}
-
-/* Para productos con descuento estándar */
-.discount-label.descuento {
-  background: #ff9800; /* Naranja para descuentos regulares */
+.banner-indicators {
+  display: none !important;
 }
