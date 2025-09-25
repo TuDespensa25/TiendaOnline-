@@ -1,11 +1,11 @@
 /* Variables CSS */
 :root {
   --color-primario: #1d1d2c;
-  --color-secundario: #2c8780;
+  --color-secundario: #1c4ca5;
   --color-terciario: #b2cac9;
   --color-blanco: #e8f2f5;
   --color-texto: #1d1d2c;
-  --color-fondo: #e8f2f5;
+  --color-fondo: #ffffff;
 }
 
 /* Reset básico y box-sizing */
@@ -1544,7 +1544,7 @@ footer {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #ff0000;
+  background-color: #1900ff;
   color: #fff;
   padding: 14px 28px;
   border: none;
