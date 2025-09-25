@@ -2263,3 +2263,100 @@ html, body {
 .banner-indicators {
   display: none !important;
 }
+/* Estilos para cada producto */
+.producto {
+  background: var(--color-blanco);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 300px;
+  height: 400px;
+  flex: 0 0 auto;
+  margin: 0 10px;
+  color: #000000; /* Texto negro por defecto */
+}
+
+.producto h3 {
+  font-size: 1.2em;
+  margin: 10px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #000000; /* Título en negro */
+}
+
+/* Precio en azul claro */
+.producto p {
+  font-size: 1.1em;
+  color: #1E40AF; /* Azul claro */
+  font-weight: bold;
+}
+
+/* Precio original tachado en gris */
+.precio-original {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 0.9em;
+}
+
+/* Precio nuevo en azul claro */
+.precio-nuevo {
+  color: #1E40AF; /* Azul claro */
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+/* Etiqueta de categoría en negro */
+.etiqueta-categoria {
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: #000000; /* Texto negro */
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* También aplicar para productos en carruseles */
+.carrusel .producto {
+  color: #000000; /* Texto negro por defecto */
+}
+
+.carrusel .producto h3 {
+  color: #000000; /* Título en negro */
+}
+
+.carrusel .producto p {
+  color: #1E40AF; /* Precio en azul claro */
+}
+
+/* Para productos recientes */
+#productos-recientes .producto {
+  color: #000000; /* Texto negro por defecto */
+}
+
+#productos-recientes .producto h3 {
+  color: #000000; /* Título en negro */
+}
+
+#productos-recientes .producto p {
+  color: #1E40AF; /* Precio en azul claro */
+}
+
+/* Para combos */
+.combo-Oferta .producto {
+  color: #000000; /* Texto negro por defecto */
+}
+
+.combo-Oferta .producto h3 {
+  color: #000000; /* Título en negro */
+}
+
+.combo-Oferta .producto p {
+  color: #1E40AF; /* Precio en azul claro */
+}
