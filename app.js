@@ -42,209 +42,89 @@ const ubicaciones = {
     "Artemisa": {
       id: 1,
       municipios: {
-        
         "San Cristóbal": 2,
-        /*"Candelaria": 3,
-        "Artemisa": 4,
-        "Alquízar": 5,
-        "Güira de Melena": 6,
-        "San Antonio de los Baños": 7,
-        "Bauta": 8,
-        "Caimito": 9,*/
         "Guanajay": 10,
-        /*"Mariel": 11,*/
       }
     },
-    /*"Pinar Del Río": {
-      id: 2,
-      municipios: {
-        "Los Palacios": 12,
-        "Consolación": 13,
-      }
-    },*/
-   
-},
+  },
   provinciaSeleccionada: null,
   municipioSeleccionado: null
 };
-// Funciones para la búsqueda
-function toggleResultadosContainer(mostrar) {
-  const container = document.getElementById('resultados-busqueda-container');
-  if (mostrar) {
-    container.classList.remove('hidden');
-  } else {
-    container.classList.add('hidden');
-  }
-}
 
-function scrollToResults() {
-  const resultadosContainer = document.getElementById('resultados-busqueda-container');
-  if (resultadosContainer) {
-    resultadosContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-}
-
-function filtrarProductosPorNombre(textoBusqueda) {
-  const textoMinuscula = textoBusqueda.toLowerCase();
-  return productos.filter(producto =>
-    producto.nombre.toLowerCase().includes(textoMinuscula)
-  );
-}
-
-// Función unificada para mostrar el modal de ubicación
+// ========== FUNCIÓN SIMPLIFICADA DE UBICACIÓN ========== //
 function mostrarModalUbicacion() {
+  // Verificar si ya hay un modal abierto
+  if (document.getElementById('modal-ubicacion')) return;
+  
   const modal = document.createElement('div');
   modal.id = 'modal-ubicacion';
   modal.className = 'modal';
+  modal.style.display = 'block';
   
   modal.innerHTML = `
-    <div class="modal-content ubicacion-modal">
-      <span class="close">&times;</span>
-      <div id="paso-provincia" class="paso-activo">
-        <h3>Seleccione su provincia</h3>
-        <select id="select-provincia" class="form-select">
-          <option value="">Seleccione una provincia</option>
-          ${Object.keys(ubicaciones.provincias).map(provincia => 
-            `<option value="${provincia}" ${ubicaciones.provinciaSeleccionada === provincia ? 'selected' : ''}>${provincia}</option>`
-          ).join('')}
-        </select>
-      </div>
-      <div id="paso-municipio" class="paso-oculto">
-        <h3>Seleccione su municipio en <span id="nombre-provincia"></span></h3>
-        <select id="select-municipio" class="form-select">
-          <option value="">Seleccione un municipio</option>
-        </select>
-      </div>
-      <div class="botones-ubicacion">
-        <button id="btn-atras" class="btn-ubicacion oculto">Atrás</button>
-        <button id="btn-siguiente" class="btn-ubicacion" ${!ubicaciones.provinciaSeleccionada ? 'disabled' : ''}>Siguiente</button>
-        <button id="btn-confirmar" class="btn-ubicacion oculto">Confirmar</button>
-      </div>
+    <div class="modal-content" style="max-width: 400px; margin: 15% auto;">
+      <h3>Selecciona tu ubicación</h3>
+      <p>Para ver los productos disponibles en tu zona</p>
+      
+      <select id="select-municipio" class="form-select" style="width: 100%; padding: 10px; margin: 10px 0;">
+        <option value="">Elige tu municipio</option>
+        <option value="10">Guanajay</option>
+        <option value="2">San Cristóbal</option>
+      </select>
+      
+      <button onclick="confirmarUbicacion()" class="btn-agregar" style="width: 100%;">Confirmar</button>
     </div>
   `;
   
   document.body.appendChild(modal);
-  modal.style.display = 'block';
+}
+
+function confirmarUbicacion() {
+  const select = document.getElementById('select-municipio');
+  const municipioId = parseInt(select.value);
   
-  // Configurar eventos
-  const selectProvincia = modal.querySelector('#select-provincia');
-  const selectMunicipio = modal.querySelector('#select-municipio');
-  const btnSiguiente = modal.querySelector('#btn-siguiente');
-  const btnAtras = modal.querySelector('#btn-atras');
-  const btnConfirmar = modal.querySelector('#btn-confirmar');
-  
-  // Si ya hay provincia seleccionada, cargar municipios
-  if (ubicaciones.provinciaSeleccionada) {
-    cargarMunicipios(ubicaciones.provinciaSeleccionada);
-  }
-  
-  selectProvincia.addEventListener('change', function() {
-    ubicaciones.provinciaSeleccionada = this.value;
-    btnSiguiente.disabled = !this.value;
-  });
-  
-  btnSiguiente.addEventListener('click', function() {
-    if (!ubicaciones.provinciaSeleccionada) {
-      alert('Por favor seleccione una provincia');
-      return;
-    }
-    
-    cargarMunicipios(ubicaciones.provinciaSeleccionada);
-    
-    // Mostrar paso municipio
-    document.getElementById('paso-provincia').classList.remove('paso-activo');
-    document.getElementById('paso-provincia').classList.add('paso-oculto');
-    document.getElementById('paso-municipio').classList.remove('paso-oculto');
-    document.getElementById('paso-municipio').classList.add('paso-activo');
-    document.getElementById('nombre-provincia').textContent = ubicaciones.provinciaSeleccionada;
-    
-    // Actualizar botones
-    btnSiguiente.classList.add('oculto');
-    btnAtras.classList.remove('oculto');
-    btnConfirmar.classList.remove('oculto');
-    
-    // Seleccionar municipio si ya estaba guardado
-    if (ubicaciones.municipioSeleccionado) {
-      selectMunicipio.value = ubicaciones.municipioSeleccionado;
-    }
-  });
-  
-  btnAtras.addEventListener('click', function() {
-    // Volver a paso provincia
-    document.getElementById('paso-municipio').classList.remove('paso-activo');
-    document.getElementById('paso-municipio').classList.add('paso-oculto');
-    document.getElementById('paso-provincia').classList.remove('paso-oculto');
-    document.getElementById('paso-provincia').classList.add('paso-activo');
-    
-    // Actualizar botones
-    btnSiguiente.classList.remove('oculto');
-    btnAtras.classList.add('oculto');
-    btnConfirmar.classList.add('oculto');
-  });
-  
-  // En la función mostrarModalUbicacion(), donde se configura btnConfirmar:
-btnConfirmar.addEventListener('click', function() {
-  const municipioSeleccionado = parseInt(selectMunicipio.value);
-  if (!municipioSeleccionado) {
-    alert('Por favor seleccione un municipio');
+  if (!municipioId) {
+    alert('Por favor selecciona un municipio');
     return;
   }
   
-  guardarUbicacion(ubicaciones.provinciaSeleccionada, municipioSeleccionado);
-  // No necesitamos cerrar el modal aquí porque ya lo hace guardarUbicacion()
-});
-  
-  modal.querySelector('.close').addEventListener('click', function() {
-    modal.style.display = 'none';
-    modal.remove();
-  });
-  
-  function cargarMunicipios(provincia) {
-    const municipios = ubicaciones.provincias[provincia].municipios;
-    
-    selectMunicipio.innerHTML = '<option value="">Seleccione un municipio</option>' +
-      Object.keys(municipios).map(municipio => 
-        `<option value="${municipios[municipio]}" ${ubicaciones.municipioSeleccionado === municipios[municipio] ? 'selected' : ''}>${municipio}</option>`
-      ).join('');
-  }
-}
-
-function guardarUbicacion(provincia, municipioId) {
-  ubicaciones.provinciaSeleccionada = provincia;
-  ubicaciones.municipioSeleccionado = municipioId;
+  // Guardar en localStorage
   localStorage.setItem('municipioSeleccionado', municipioId);
   
-  // Cerrar y eliminar el modal
+  // Cerrar modal
   const modal = document.getElementById('modal-ubicacion');
   if (modal) {
-    modal.style.display = 'none';
-    modal.remove(); // Eliminar el modal del DOM
+    modal.remove();
   }
   
-  // Actualizar el botón en el header
-  const nombreMunicipio = obtenerNombreMunicipio(municipioId);
-  const ubicacionBtn = document.getElementById('ubicacion-actual');
-  if (ubicacionBtn) {
-    ubicacionBtn.textContent = `${provincia}, ${nombreMunicipio}`;
+  // Actualizar botón y recargar productos
+  actualizarBotonUbicacion();
+  if (typeof renderizarProductos === 'function') {
+    renderizarProductos();
   }
-  
-  // Recargar productos
-  renderizarProductos();
-  renderizarOfertas();
-  renderizarProductosRecientes();
-  renderizarCombosOferta();
+  if (typeof renderizarOfertas === 'function') {
+    renderizarOfertas();
+  }
+  if (typeof renderizarProductosRecientes === 'function') {
+    renderizarProductosRecientes();
+  }
 }
 
-function obtenerNombreMunicipio(id) {
-  for (const provincia in ubicaciones.provincias) {
-    for (const municipio in ubicaciones.provincias[provincia].municipios) {
-      if (ubicaciones.provincias[provincia].municipios[municipio] === id) {
-        return municipio;
-      }
-    }
+function actualizarBotonUbicacion() {
+  const municipioId = localStorage.getItem('municipioSeleccionado');
+  const boton = document.getElementById('ubicacion-actual');
+  
+  if (!boton) return;
+  
+  if (municipioId === '10') {
+    boton.textContent = 'Artemisa, Guanajay';
+  } else if (municipioId === '2') {
+    boton.textContent = 'Artemisa, San Cristóbal';
+  } else {
+    boton.textContent = 'Seleccionar ubicación';
   }
-  return '';
 }
+// ========== FIN FUNCIÓN UBICACIÓN ========== //
 
 function cargarUbicacionGuardada() {
   const municipioGuardado = localStorage.getItem('municipioSeleccionado');
@@ -269,65 +149,90 @@ function cargarUbicacionGuardada() {
   return false;
 }
 
-// Modificación del DOMContentLoaded
-document.addEventListener("DOMContentLoaded", () => {
-  // Verificar si estamos en la página del carrito
-  const isCartPage = window.location.pathname.includes("cart.html");
-  
-  // Cargar ubicación guardada (si existe)
-  const tieneUbicacion = cargarUbicacionGuardada();
-  
-  // Mostrar modal solo si no hay ubicación guardada Y no estamos en el carrito
-  if (!tieneUbicacion && !isCartPage) {
-    mostrarModalUbicacion();
+// Funciones para la búsqueda
+function toggleResultadosContainer(mostrar) {
+  const container = document.getElementById('resultados-busqueda-container');
+  if (mostrar) {
+    container.classList.remove('hidden');
+  } else {
+    container.classList.add('hidden');
   }
-  
-  // Configurar botón para cambiar ubicación
-  document.getElementById('cambiar-ubicacion')?.addEventListener('click', mostrarModalUbicacion);
-  // ========== [CODIGO NUEVO - PEGA ESTO] ========== //
-// Configurar menú de categorías
-const categories = document.querySelectorAll('.category');
-if (categories.length > 0) {
-  categories.forEach(category => {
-    category.addEventListener('click', () => {
-      // Remover clase 'active' de todas las categorías
-      categories.forEach(c => c.classList.remove('active'));
-      // Añadir clase 'active' a la categoría clickeada
-      category.classList.add('active');
-      // Filtrar productos
-      renderizarProductos(category.dataset.category);
-    });
-  });
-  
-  // Mostrar todos los productos al inicio
-  renderizarProductos("todas");
 }
-// ========== [FIN DE CODIGO NUEVO] ========== //
+
+function scrollToResults() {
+  const resultadosContainer = document.getElementById('resultados-busqueda-container');
+  if (resultadosContainer) {
+    resultadosContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function filtrarProductosPorNombre(textoBusqueda) {
+  const textoMinuscula = textoBusqueda.toLowerCase();
+  return productos.filter(producto =>
+    producto.nombre.toLowerCase().includes(textoMinuscula)
+  );
+}
+
+// ========== INICIALIZACIÓN SIMPLIFICADA ========== //
+document.addEventListener("DOMContentLoaded", () => {
+  console.log('Página cargada - Inicializando...');
   
-  // Resto de tu inicialización...
+  // 1. Cargar carrito primero
   cargarCarritoDesdeLocalStorage();
+  actualizarContadorCarrito();
   
-  if (productosContainer) {
+  // 2. Verificar ubicación SOLO en página principal
+  const esPaginaPrincipal = !window.location.pathname.includes('cart.html');
+  const tieneUbicacion = localStorage.getItem('municipioSeleccionado');
+  
+  if (esPaginaPrincipal && !tieneUbicacion) {
+    console.log('Mostrando modal de ubicación');
+    setTimeout(() => mostrarModalUbicacion(), 1000);
+  } else if (tieneUbicacion) {
+    actualizarBotonUbicacion();
+  }
+  
+  // 3. Configurar botón de ubicación
+  const btnUbicacion = document.getElementById('cambiar-ubicacion');
+  if (btnUbicacion) {
+    btnUbicacion.onclick = mostrarModalUbicacion;
+  }
+  
+  // 4. Inicializar componentes según la página
+  if (document.getElementById('productos-container')) {
+    // Estamos en index.html
     renderizarProductos();
-    // ... (código existente de filtros)
-  }
-  
-  renderizarCombosOferta();
-  renderizarOfertas();
-  renderizarProductosRecientes();
-  
-  // Ocultar o eliminar el selector de método de pago
-  const metodoSelect = document.getElementById("metodo-pago");
-  if (metodoSelect) {
-    metodoSelect.style.display = "none";
     
-    // También puedes crear un elemento fijo que muestre "CUP"
-    const monedaFija = document.createElement("div");
-    monedaFija.textContent = "Moneda: CUP (Pesos Cubanos)";
-    monedaFija.className = "moneda-cup-fija";
-    metodoSelect.parentNode.insertBefore(monedaFija, metodoSelect);
+    // Configurar categorías si existen
+    const categories = document.querySelectorAll('.category');
+    if (categories.length > 0) {
+      categories.forEach(category => {
+        category.addEventListener('click', () => {
+          categories.forEach(c => c.classList.remove('active'));
+          category.classList.add('active');
+          renderizarProductos(category.dataset.category);
+        });
+      });
+    }
+    
+    // Configurar búsqueda
+    const searchInput = document.getElementById('busqueda-productos');
+    if (searchInput) {
+      let timeout;
+      searchInput.addEventListener('input', () => {
+        clearTimeout(timeout);
+        timeout = setTimeout(buscarYMostrarProductos, 300);
+      });
+    }
+    
+    renderizarOfertas();
+    renderizarProductosRecientes();
+    renderizarCombosOferta();
   }
+  
+  console.log('Inicialización completada');
 });
+// ========== FIN INICIALIZACIÓN ========== //
 
 /// Obtener directamente el ref desde la URL actual, sin guardar en localStorage
 function obtenerVendedorDesdeURL() {
@@ -337,7 +242,8 @@ function obtenerVendedorDesdeURL() {
 }
 
 
-// Lista de productos (solo un ejemplo, añade el resto de tus productos siguiendo este formato)
+  // AQUÍ VAN TODOS TUS PRODUCTOS - los mantienes igual
+  // Lista de productos (solo un ejemplo, añade el resto de tus productos siguiendo este formato)
 const productos = [
   // Ejemplo de producto con atributo municipios
   
@@ -705,9 +611,7 @@ const productos = [
     imagen: "guajira.png",
     description: "1 ud",
     categoria: "Alimentos/Líquidos",
-    municipios: [1, 2, 3,  12, 13,
-      14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
-    ]
+    municipios: [1, 2, 3,  12, 13,14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
   },
   {
     id: 24,
@@ -716,7 +620,7 @@ const productos = [
     imagen: "200ml.png",
     description: "Caja de 24 uds de 200 ml",
     categoria: "Alimentos/Líquidos",
-    municipios: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 
+    municipios: [1,  3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
     ]
   },
@@ -2129,28 +2033,46 @@ const combosOferta = [
       14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
      ]
   },*/
-
-
 ];
-// Mover esta función fuera de renderizarProductos para que sea accesible globalmente
-function filtrarProductosPorNombre(textoBusqueda) {
+
+
+function buscarYMostrarProductos() {
+  const textoBusqueda = document.getElementById('busqueda-productos').value.trim();
+  const resultadosContainer = document.getElementById('resultados-busqueda');
+  const municipioSeleccionado = localStorage.getItem('municipioSeleccionado');
+  
+  if (textoBusqueda === '') {
+    toggleResultadosContainer(false);
+    return;
+  }
+
+  // Primero filtrar por municipio, luego por texto
+  let productosFiltrados = productos;
+  
+  // Filtrar por municipio si hay uno seleccionado
+  if (municipioSeleccionado) {
+    const municipioNum = parseInt(municipioSeleccionado);
+    productosFiltrados = productosFiltrados.filter(p => 
+      p.municipios && p.municipios.includes(municipioNum)
+    );
+  }
+  
+  // Luego filtrar por texto de búsqueda
   const textoMinuscula = textoBusqueda.toLowerCase();
-  return productos.filter(producto =>
+  productosFiltrados = productosFiltrados.filter(producto =>
     producto.nombre.toLowerCase().includes(textoMinuscula)
   );
-}
-
-// Función para manejar la búsqueda y mostrar resultados
-function buscarYMostrarProductos() {
-  const textoBusqueda = document.getElementById('busqueda-productos').value;
-  const productosFiltrados = filtrarProductosPorNombre(textoBusqueda);
   
-  // Renderizar los productos filtrados
   if (productosFiltrados.length === 0) {
-    productosContainer.innerHTML = '<p class="no-results">No se encontraron productos que coincidan con tu búsqueda.</p>';
-  } else {
-    renderizarListaProductos(productosFiltrados);
+    resultadosContainer.innerHTML = '<p class="no-results">No se encontraron productos que coincidan con tu búsqueda.</p>';
+    toggleResultadosContainer(true);
+    scrollToResults();
+    return;
   }
+  
+  renderizarListaProductos(productosFiltrados, resultadosContainer);
+  toggleResultadosContainer(true);
+  scrollToResults();
 }
 
 // Función modificada para renderizar una lista dada de productos
@@ -2225,53 +2147,6 @@ function renderizarProductos(categoria = "todas") {
   
   renderizarListaProductos(filtrados);
 }
-function buscarYMostrarProductos() {
-  const textoBusqueda = document.getElementById('busqueda-productos').value.trim();
-  const resultadosContainer = document.getElementById('resultados-busqueda');
-  
-  if (textoBusqueda === '') {
-    toggleResultadosContainer(false);
-    return;
-  }
-
-  const productosFiltrados = filtrarProductosPorNombre(textoBusqueda);
-  
-  if (productosFiltrados.length === 0) {
-    resultadosContainer.innerHTML = '<p class="no-results">No se encontraron productos que coincidan con tu búsqueda.</p>';
-    toggleResultadosContainer(true);
-    scrollToResults();
-    return;
-  }
-
-  renderizarListaProductos(productosFiltrados, resultadosContainer);
-  toggleResultadosContainer(true);
-  scrollToResults();
-}
-
-// En el DOMContentLoaded, agregar el event listener para la búsqueda
-document.addEventListener("DOMContentLoaded", () => {
-  // ... código existente ...
-  
- 
-    // Configurar el evento de búsqueda
-  const searchInput = document.getElementById('busqueda-productos');
-  if (searchInput) {
-    let timeout;
-    searchInput.addEventListener('input', () => {
-      clearTimeout(timeout);
-      timeout = setTimeout(buscarYMostrarProductos, 300);
-    });
-    
-    searchInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        clearTimeout(timeout);
-        buscarYMostrarProductos();
-      }
-    });
-  }
-  
-  // ... resto del código existente ...
-});
 
 function renderizarCombosOferta() {
   const combosContainer = document.getElementById("combos-Oferta-container");
@@ -2334,9 +2209,6 @@ function renderizarCombosOferta() {
 
   combosContainer.appendChild(innerContainer);
 }
-
-  
-
 
 // Variables globales y caching de elementos
 let carrito = [];
@@ -2648,13 +2520,11 @@ function validarFormulario() {
     alert("Por favor, complete todos los campos obligatorios.");
     return false;
   }
-
   // Validación del número de teléfono (WhatsApp)
   if (!/^\d{8,10}$/.test(telefonoComprador)) {
     alert("El número de teléfono no es válido. Debe tener 8 o 9 o 10 dígitos.");
     return false;
   }
-
   // Validación del correo electrónico (opcional)
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(emailComprador)) {
@@ -2670,7 +2540,6 @@ function enviarPedidoPorWhatsapp() {
   if (!validarFormulario()) {
     return; // Detener si la validación falla
   }
-
   const nombreComprador = document.getElementById("nombre-comprador").value;
   const emailComprador = document.getElementById("email-comprador").value;
   const telefonoComprador = document.getElementById("telefono-comprador").value;
@@ -2692,7 +2561,6 @@ function enviarPedidoPorWhatsapp() {
     mensaje += `• Nombre: ${nombreBeneficiario}\n`;
     mensaje += `• Teléfono: ${telefonoBeneficiario}\n\n`;
   }
-
   mensaje += `Información de Envío:\n\n`;
   mensaje += `• Dirección: ${direccionEntrega}\n`;
   if (nota) {
@@ -2705,7 +2573,6 @@ function enviarPedidoPorWhatsapp() {
   if (vendedor) {
     mensaje += `Vendedor: ${vendedor}\n\n`;
   }
-
   mensaje += `Información de Pago:\n`;
   mensaje += `Total a pagar: ${totalCUP.toFixed(2)} CUP\n`;
   mensaje += `Por favor en minutos recibirá la cuenta a transferir realice la transferencia y envíe el comprobante por este medio.\n\n`;
@@ -2778,19 +2645,6 @@ function mostrarDescripcionProducto(producto) {
 
   modal.style.display = "block";
 }
-document.addEventListener("DOMContentLoaded", () => {
-  const botonAgregar = document.getElementById("btn-add-modal");
-  if (botonAgregar) {
-    botonAgregar.addEventListener("click", () => {
-      const id = parseInt(botonAgregar.dataset.id, 10);
-      agregarAlCarrito(id);
-
-      // Cerrar modal después de añadir
-      const modal = document.getElementById("modal-descripcion");
-      if (modal) modal.style.display = "none";
-    });
-  }
-});
 
 // Event delegation
 document.addEventListener("click", (e) => {
@@ -2863,9 +2717,8 @@ function sharePage() {
   }
 }
 
-// Inicialización al cargar la página
+// Inicialización del modal de descripción
 document.addEventListener("DOMContentLoaded", () => {
-  document.addEventListener("DOMContentLoaded", () => {
   const botonAgregar = document.getElementById("btn-add-modal");
   if (botonAgregar) {
     botonAgregar.addEventListener("click", () => {
@@ -2878,56 +2731,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
-  // Mostrar los modales de ubicación en cada carga de página
-  mostrarModalUbicacion();
-  // Capturar el vendedor desde la URL y guardarlo
-  capturarVendedor();
-
-  cargarCarritoDesdeLocalStorage();
-  if (productosContainer) {
-    renderizarProductos();
-    const filtros = document.querySelectorAll(".filtro-btn");
-    filtros.forEach(btn => {
-      btn.addEventListener("click", () => {
-        filtros.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderizarProductos(btn.dataset.categoria);
-      });
-    });
-    renderizarOfertas();
-  }
-  if (document.getElementById("items-carrito")) {
-    renderizarCarrito();
-    const btnWhatsapp = document.getElementById("pedir-whatsapp");
-    if (btnWhatsapp) {
-      btnWhatsapp.addEventListener("click", (e) => {
-        e.preventDefault();
-        document.getElementById("modal-pedido").style.display = "block";
-      });
-    }
-    const formularioPedido = document.getElementById("formulario-pedido");
-    if (formularioPedido) {
-      formularioPedido.addEventListener("submit", (e) => {
-        e.preventDefault();
-        if (validarFormulario()) {
-          enviarPedidoPorWhatsapp();
-        }
-      });
-    }
-  }
-  const telefonoInput = document.getElementById("telefono");
-  if (telefonoInput) {
-    telefonoInput.addEventListener("input", () => {
-      if (!/^\d*$/.test(telefonoInput.value)) {
-        telefonoInput.setCustomValidity("Solo se permiten números.");
-      } else {
-        telefonoInput.setCustomValidity("");
-      }
-    });
-  }
-});
-
 
 // Inicializar las secciones
 let currentSlide = 0;
@@ -2958,6 +2761,7 @@ function goToSlide(index) {
 setInterval(() => {
   changeSlide(1);
 }, 10000);
+
 function toggleMenu() {
   const nav = document.getElementById("main-nav");
   nav.classList.toggle("active");
@@ -2969,22 +2773,8 @@ showSlide(currentSlide);
 renderizarCombosOferta(); 
 renderizarOfertas();
 renderizarProductosRecientes();
-document.addEventListener('DOMContentLoaded', () => {
-  // Verifica si ya hay un municipio guardado en el localStorage.
-  const municipioGuardado = localStorage.getItem('municipioSeleccionado');
-  
-  // Verifica si la página actual es la del carrito (por ejemplo, "cart.html")
-  const isCartPage = window.location.pathname.includes('cart.html');
-  
-  
-  // Si no se encontró un municipio seleccionado y NO estamos en la página del carrito, se muestra el modal.
-  if (!municipioGuardado && !isCartPage) {
-    mostrarModalUbicacion();
-  }
-});
-document.querySelector(".close-button").addEventListener("click", () => {
-  document.querySelector(".product-details-container").classList.remove("show");
-});
+
+// Manejo de hash para productos
 const url = new URL(window.location.href);
 const hash = url.hash;
 
