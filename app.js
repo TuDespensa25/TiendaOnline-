@@ -203,17 +203,54 @@ document.addEventListener("DOMContentLoaded", () => {
     // Estamos en index.html
     renderizarProductos();
     
-    // Configurar categorías si existen
-    const categories = document.querySelectorAll('.category');
-    if (categories.length > 0) {
-      categories.forEach(category => {
-        category.addEventListener('click', () => {
-          categories.forEach(c => c.classList.remove('active'));
-          category.classList.add('active');
-          renderizarProductos(category.dataset.category);
-        });
-      });
-    }
+    // Manejo de categorías (Desktop + Móvil)
+function setupCategoryListeners() {
+    // Delegación de eventos para todas las categorías
+    document.addEventListener('click', function(e) {
+        const categoryElement = e.target.closest('.category') || 
+                              e.target.closest('.category-card');
+        
+        if (categoryElement) {
+            const category = categoryElement.dataset.category;
+            
+            // Remover active de todas las categorías
+            document.querySelectorAll('.category, .category-card').forEach(cat => {
+                cat.classList.remove('active');
+            });
+            
+            // Agregar active a la categoría clickeada
+            categoryElement.classList.add('active');
+            
+            // Filtrar productos
+            if (typeof renderizarProductos === 'function') {
+                renderizarProductos(category);
+            }
+            
+            // Scroll suave a productos en móvil
+            if (window.innerWidth <= 768) {
+                const productosSection = document.getElementById('productos-container');
+                if (productosSection) {
+                    setTimeout(() => {
+                        productosSection.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }, 300);
+                }
+            }
+        }
+    });
+}
+
+// Llamar en la inicialización
+document.addEventListener("DOMContentLoaded", () => {
+    // ... tu código existente ...
+    
+    // Configurar listeners de categorías
+    setupCategoryListeners();
+    
+    // ... resto de tu código ...
+});
     
     // Configurar búsqueda
     const searchInput = document.getElementById('busqueda-productos');
@@ -2784,4 +2821,51 @@ if (hash.startsWith("#producto-")) {
   if (producto) {
     setTimeout(() => mostrarDescripcionProducto(producto), 500); // espera que cargue
   }
+}
+// SOLUCIÓN DE EMERGENCIA - Agrega esto al final de app.js
+function initMobileCategories() {
+    console.log('Inicializando categorías móviles...');
+    
+    const categoryCards = document.querySelectorAll('.category-card');
+    console.log('Encontradas ' + categoryCards.length + ' categorías móviles');
+    
+    categoryCards.forEach(card => {
+        // Hacer que toda la tarjeta sea clickeable
+        card.style.cursor = 'pointer';
+        
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            console.log('Click en categoría:', this.dataset.category);
+            
+            // Remover active de todos
+            categoryCards.forEach(c => c.classList.remove('active'));
+            
+            // Agregar active a este
+            this.classList.add('active');
+            
+            // También actualizar categorías desktop
+            const categoryType = this.dataset.category;
+            const desktopCats = document.querySelectorAll('.category');
+            desktopCats.forEach(cat => cat.classList.remove('active'));
+            
+            const correspondingDesktop = document.querySelector(`.category[data-category="${categoryType}"]`);
+            if (correspondingDesktop) {
+                correspondingDesktop.classList.add('active');
+            }
+            
+            // Filtrar productos
+            if (typeof renderizarProductos === 'function') {
+                renderizarProductos(categoryType);
+            }
+        });
+    });
+}
+
+// Inicializar cuando el DOM esté listo
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileCategories);
+} else {
+    initMobileCategories();
 }

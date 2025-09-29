@@ -151,69 +151,93 @@
   </div>
   
   <div class="menu-container">
-    <!-- Barra lateral de categorías -->
-    <div class="menu-categories">
-      <div class="category active" data-category="todas">
-        <i class="fas fa-home"></i>
-        <span>Todas</span>
-      </div>
-      <div class="category" data-category="De Electrodomésticos">
-        <i class="fas fa-plug"></i>
-        <span>Electrodomésticos</span>
-      </div>
-      <div class="category" data-category="Alimentos/Cárnicos">
-        <i class="fas fa-drumstick-bite"></i>
-        <span>Cárnicos</span>
-      </div>
-      <div class="category" data-category="Combos Variados">
-        <i class="fas fa-drumstick-bite"></i>
-        <span>Combos</span>
-      </div>
-      <div class="category" data-category="Alimentos/Lácteos">
-        <i class="fas fa-cheese"></i>
-        <span>Lácteos</span>
-      </div>
-      <div class="category" data-category="Alimentos/Líquidos">
-        <i class="fas fa-wine-bottle"></i>
-        <span>Bebidas</span>
-      </div>
-      <div class="category" data-category="Granos">
-  <i class="fas fa-seedling"></i> <!-- Ícono de granos -->
-  <span>Granos</span>
-</div>
-      <div class="category" data-category="Alimentos/Del Confi">
-        <i class="fas fa-cookie"></i>
-        <span>Confitería</span>
-      </div>
-      <div class="category" data-category="Alimentos/Del Agro">
-        <i class="fas fa-carrot"></i>
-        <span>Agrito TuDespensa.25</span>
-      </div>
-      <div class="category" data-category="Aderezo y condimentos">
-  <i class="fas fa-mortar-pestle"></i>
-  <span>Aderezos y Condimentos</span>
+    <!-- Categorías Desktop (se muestra en pantallas grandes) -->
+<div class="categories-container">
+    <!-- Tus categorías desktop actuales aquí -->
+    <div class="category active" data-category="todas">Todas</div>
+    <div class="category" data-category="Alimentos/Cárnicos">Cárnicos</div>
+    <div class="category" data-category="Alimentos/Líquidos">Líquidos</div>
+    <div class="category" data-category="Alimentos/Lácteos">Lácteos</div>
+    <div class="category" data-category="Alimentos/Del Agro">Del Agro</div>
+    <div class="category" data-category="Alimentos/Del Confi">Del Confi</div>
+    <div class="category" data-category="Del Hogar">Hogar</div>
+    <div class="category" data-category="De Electrodomésticos">Electro</div>
 </div>
 
-<div class="category" data-category="Enlatados y conservas">
- <i class="fas fa-fish"></i>
-  <span>Enlatados</span>
-</div>
-
-<div class="category" data-category="Licoreria">
-  <i class="fas fa-glass-whiskey"></i>
-  <span>Licorería</span>
-</div>
-
-<div class="category" data-category="Productos mixtos">
-  <i class="fas fa-box-open"></i>
-  <span>Productos Mixtos</span>
-</div>
-     
-      <div class="category" data-category="Del Hogar">
-        <i class="fas fa-home"></i>
-        <span>Hogar</span>
-      </div>
+<!-- Categorías Móvil con Imágenes (se muestra solo en móvil) -->
+<div class="categories-grid">
+    <!-- Todas las categorías -->
+    <div class="category-card active" data-category="todas">
+        <img src="images/categoria-todas.png" alt="Todos los productos" class="category-image" loading="lazy">
+        <div class="category-overlay">
+            <h3 class="category-name">Todos</h3>
+        </div>
+        <div class="category-badge">+50</div>
     </div>
+    
+    <!-- Cárnicos -->
+    <div class="category-card" data-category="Alimentos/Cárnicos">
+        <img src="images/categoria-carnicos.png" alt="Cárnicos" class="category-image" loading="lazy">
+        <div class="category-overlay">
+            <h3 class="category-name">Cárnicos</h3>
+        </div>
+        <div class="category-badge">12</div>
+    </div>
+    
+    <!-- Líquidos -->
+    <div class="category-card" data-category="Alimentos/Líquidos">
+        <img src="images/categoria-liquidos.png" alt="Líquidos" class="category-image" loading="lazy">
+        <div class="category-overlay">
+            <h3 class="category-name">Líquidos</h3>
+        </div>
+        <div class="category-badge">15</div>
+    </div>
+    
+    <!-- Lácteos -->
+    <div class="category-card" data-category="Alimentos/Lácteos">
+        <img src="images/categoria-lacteos.png" alt="Lácteos" class="category-image" loading="lazy">
+        <div class="category-overlay">
+            <h3 class="category-name">Lácteos</h3>
+        </div>
+        <div class="category-badge">8</div>
+    </div>
+    
+    <!-- Del Agro -->
+    <div class="category-card" data-category="Alimentos/Del Agro">
+        <img src="images/categoria-agro.png" alt="Del Agro" class="category-image" loading="lazy">
+        <div class="category-overlay">
+            <h3 class="category-name">Del Agro</h3>
+        </div>
+        <div class="category-badge">6</div>
+    </div>
+    
+    <!-- Del Confi -->
+    <div class="category-card" data-category="Alimentos/Del Confi">
+        <img src="images/categoria-confi.png" alt="Del Confi" class="category-image" loading="lazy">
+        <div class="category-overlay">
+            <h3 class="category-name">Del Confi</h3>
+        </div>
+        <div class="category-badge">14</div>
+    </div>
+    
+    <!-- Del Hogar -->
+    <div class="category-card" data-category="Del Hogar">
+        <img src="images/categoria-hogar.png" alt="Del Hogar" class="category-image" loading="lazy">
+        <div class="category-overlay">
+            <h3 class="category-name">Hogar</h3>
+        </div>
+        <div class="category-badge">7</div>
+    </div>
+    
+    <!-- Electrodomésticos -->
+    <div class="category-card" data-category="De Electrodomésticos">
+        <img src="images/categoria-electro.png" alt="Electrodomésticos" class="category-image" loading="lazy">
+        <div class="category-overlay">
+            <h3 class="category-name">Electro</h3>
+        </div>
+        <div class="category-badge">10</div>
+    </div>
+</div>
     
     <!-- Contenido principal del menú -->
     <div class="menu-content">
