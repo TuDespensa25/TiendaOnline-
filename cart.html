@@ -89,24 +89,21 @@
         <h3>Información del Comprador</h3>
         <label for="nombre-comprador">Nombre Completo:</label>
         <input type="text" id="nombre-comprador" name="nombre-comprador" required>
-  
-        <!--<label for="email-comprador">Correo Electrónico:</label>
-        <input type="email" id="email-comprador" name="email-comprador" required>-->
-  
+
         <label for="telefono-comprador">Número de Teléfono:</label>
         <input type="tel" id="telefono-comprador" name="telefono-comprador" required>
-  
+
         <h3>Información del Beneficiario </h3>
         <label for="nombre-beneficiario">Nombre Completo:</label>
         <input type="text" id="nombre-beneficiario" name="nombre-beneficiario">
-  
+
         <label for="telefono-beneficiario">Número de Teléfono:</label>
         <input type="tel" id="telefono-beneficiario" name="telefono-beneficiario">
-  
+
         <h3>Información de Envío</h3>
         <label for="direccion-entrega">Dirección de Entrega:</label>
         <input type="text" id="direccion-entrega" name="direccion-entrega" required>
-  
+
         <label for="nota">Nota (opcional):</label>
         <textarea id="nota" name="nota" rows="3"></textarea>
         
@@ -156,18 +153,17 @@ const carritoManager = {
   
   validarFormulario() {
     const nombreComprador = document.getElementById('nombre-comprador').value;
-    const emailComprador = document.getElementById('email-comprador').value;
     const telefonoComprador = document.getElementById('telefono-comprador').value;
     const direccionEntrega = document.getElementById('direccion-entrega').value;
     
     console.log('Validando formulario:', {
       nombreComprador,
-      emailComprador,
       telefonoComprador,
       direccionEntrega
     });
 
-    if (!nombreComprador || !emailComprador || !telefonoComprador || !direccionEntrega) {
+    // Solo validar campos obligatorios (sin email)
+    if (!nombreComprador || !telefonoComprador || !direccionEntrega) {
       console.log('Campos obligatorios vacíos');
       alert('Por favor, complete todos los campos obligatorios.');
       return false;
@@ -176,13 +172,6 @@ const carritoManager = {
     if (!/^\d{8,10}$/.test(telefonoComprador)) {
       console.log('Teléfono inválido:', telefonoComprador);
       alert('El número de teléfono no es válido. Debe tener 8 a 10 dígitos.');
-      return false;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(emailComprador)) {
-      console.log('Email inválido:', emailComprador);
-      alert('El correo electrónico no es válido.');
       return false;
     }
 
@@ -206,7 +195,6 @@ const carritoManager = {
 
     console.log('Formulario válido, obteniendo datos...');
     const nombreComprador = document.getElementById('nombre-comprador').value;
-    const emailComprador = document.getElementById('email-comprador').value;
     const telefonoComprador = document.getElementById('telefono-comprador').value;
     const direccionEntrega = document.getElementById('direccion-entrega').value;
     const nota = document.getElementById('nota').value;
@@ -215,7 +203,6 @@ const carritoManager = {
 
     console.log('Datos del formulario:', {
       nombreComprador,
-      emailComprador,
       telefonoComprador,
       direccionEntrega,
       nota,
@@ -238,7 +225,6 @@ const carritoManager = {
     let mensaje = `Nuevo Pedido\n\n`;
     mensaje += `Datos del Comprador:\n\n`;
     mensaje += `• Nombre: ${nombreComprador}\n`;
-    mensaje += `• Email: ${emailComprador}\n`;
     mensaje += `• Teléfono: ${telefonoComprador}\n\n`;
 
     if (nombreBeneficiario && telefonoBeneficiario) {

@@ -2512,7 +2512,7 @@ function redirigirAPaginaPrincipal() {
 
 function validarFormulario() {
   const nombreComprador = document.getElementById("nombre-comprador").value;
-  const emailComprador = document.getElementById("email-comprador").value;
+ /* const emailComprador = document.getElementById("email-comprador").value;*/
   const telefonoComprador = document.getElementById("telefono-comprador").value;
   const direccionEntrega = document.getElementById("direccion-entrega").value;
 
@@ -2541,7 +2541,7 @@ function enviarPedidoPorWhatsapp() {
     return; // Detener si la validación falla
   }
   const nombreComprador = document.getElementById("nombre-comprador").value;
-  const emailComprador = document.getElementById("email-comprador").value;
+  /*const emailComprador = document.getElementById("email-comprador").value;*/
   const telefonoComprador = document.getElementById("telefono-comprador").value;
   const direccionEntrega = document.getElementById("direccion-entrega").value;
   const nota = document.getElementById("nota").value;
